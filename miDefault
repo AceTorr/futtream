@@ -47,13 +47,11 @@ lasliao = xbmc.translatePath(os.path.join(audios, 'error.mp3'))
 horusTorrent = "eydhY3Rpb24nOiAncGxheScsICdmYW5hcnQnOiAnJywgJ2ljb24nOiAnTUktSUNPTk8nLCAndXJsJzogJ01JLVRPUlJFTlQnLCAnbGFiZWwnOiAnTUktVElUVUxPJ30="  ## Para Torrents
 horusAce = "eydhY3Rpb24nOiAncGxheScsICdmYW5hcnQnOiAnTUktRkFOQVJUJywgJ2ljb24nOiAnTUktSUNPTk8nLCAnaWQnOiAnTUktSUQtQUNFJywgJ2xhYmVsJzogJ01JLVRJVFVMTyd9"  ##Para id-Aces
 
-#datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9wYXN0ZWJpbi5jb20vcmF3LzVxV3dTQ3FF".encode('utf-8')).decode('utf-8')).data
-datosConf = httptools.downloadpage("https://raw.githubusercontent.com/AceTorr/futtream/main/DatosConf").data
+datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0FjZVRvcnIvZnV0dHJlYW0vbWFpbi9EYXRvc0NvbmY=".encode('utf-8')).decode('utf-8')).data
 
-'''
-if not "<FutbolTream>" in datosConf:
+if not "<FutbolTream2>" in datosConf:
     datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yZW50cnkuY28veHM2YmYvcmF3".encode('utf-8')).decode('utf-8')).data
-'''
+
 
 ListaCentralAcotaInicio = plugintools.find_single_match(datosConf,'ListaCentralAcotaInicio>(.*?)<Fin')
 ListaCentralAcotaFin = plugintools.find_single_match(datosConf,'ListaCentralAcotaFin>(.*?)<Fin')
@@ -76,7 +74,7 @@ Lista4_Titulo = plugintools.find_single_match(datosConf,'Lista4_Titulo>(.*?)<Fin
 Lista4_AcotaInicio = plugintools.find_single_match(datosConf,'Lista4_AcotaInicio>(.*?)<Fin')
 Lista4_AcotaFin = plugintools.find_single_match(datosConf,'Lista4_AcotaFin>(.*?)<Fin')
 
-web = plugintools.find_single_match(datosConf,'FutbolTream>(.*?)<Fin')
+web = plugintools.find_single_match(datosConf,'FutbolTream2>(.*?)<Fin')
 headers = {'Referer': web}
 
 dataWeb = httptools.downloadpage(web).data + "<END>"
