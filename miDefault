@@ -31,6 +31,7 @@ addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 version="(v0.2.1) Fix 003"
 comparaVersion="0.2.1 Fix 003"
 
+
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 mi_data = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/plugin.video.FutbolTream/'))
 mi_addon = xbmc.translatePath(os.path.join('special://home/addons/plugin.video.FutbolTream'))
