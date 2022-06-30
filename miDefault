@@ -28,8 +28,9 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 003"
-comparaVersion="0.2.1 Fix 003"
+version="(v0.2.1) Fix 004"
+comparaVersion="0.2.1 Fix 004"
+
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 mi_data = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/plugin.video.FutbolTream/'))
@@ -143,7 +144,8 @@ def miDefault(params):
         if "Canales 365" in dataWeb:
             plugintools.add_item(action="canales365",url="",title='[COLOR white]Canales 365[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
 
-        if "NBA Tv" in dataWeb:
+        #if ("NBA Tv" in dataWeb) or ("@ManuK0S" in dataWeb) or ("@MANUK0S" in dataWeb):
+        if (Lista4_AcotaInicio in dataWeb):
             plugintools.add_item(action="nbaTV",url=web,title='[COLOR white]'+Lista4_Titulo+'[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
     
     if "<Varios>" in datosConf:
@@ -323,7 +325,9 @@ def bylucas(params):  ##Lista 1
     acotacion = Lista1_AcotaInicio
     acotaFin = Lista1_AcotaFin
     grupo = plugintools.find_single_match(dataWeb,acotacion+'(.*?)'+acotaFin)  
+    plugintools.log("*****************Grupo: "+grupo+"********************")
     canales = plugintools.find_multiple_matches(grupo,'<a(.*?)/a>')
+    #plugintools.log("*****************WEB: "+dataWeb+"********************")
     for item in canales:
         link = plugintools.find_single_match(item,'href="(.*?)"')
         titulo = plugintools.find_single_match(item,'follow">(.*?)<')
@@ -425,16 +429,23 @@ def manukos(params):  ##Lista 2
 
 
 
-def nbaTV(params):  ##Lista 4
+def nbaTV(params):  ##Lista 4... Varios
     
     acotacion = Lista4_AcotaInicio
     acotaFin = Lista4_AcotaFin
     grupo = plugintools.find_single_match(dataWeb,acotacion+'(.*?)'+acotaFin)  
+    #plugintools.log("*****************Acota1 "+acotacion+"********************")
     canales = plugintools.find_multiple_matches(grupo,'<a(.*?)/a>')
     for item in canales:
         link = plugintools.find_single_match(item,'href="(.*?)"')
         titulo = plugintools.find_single_match(item,'follow">(.*?)<')
         titu = "[COLOR white]" + titulo + "[/COLOR]"
+        
+        ##Ahora están metiendo algunos canales m3u8 en emisión directa de su propia web... Los identifico e intento sacar el link real
+        if "futbolgratis.workers.dev" in link:
+            web2 = httptools.downloadpage(link).data
+            acotacion = 'source src="'
+            link = plugintools.find_single_match(web2,acotacion+'(.*?)"')  
         
         NoM3U = True
         if len(titulo) > 0:
@@ -567,7 +578,8 @@ def lanza(params):
     logo = params.get("thumbnail")
     titu = params.get("title")
     titulo = params.get("extra")
-
+    #mivideo = "plugin://plugin.video.youtube/play/?video_id=BIc2fgz25iA"
+    #mivideo = "http://46.21.250.55:8080/live/Julito/Julito/93379.m3u8|user-agent=vlc"
     xbmc.Player().play(mivideo)
 
 
