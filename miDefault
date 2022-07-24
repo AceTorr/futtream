@@ -28,8 +28,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 004"
-comparaVersion="0.2.1 Fix 004"
+version="(v0.2.1) Fix 005"
+comparaVersion="0.2.1 Fix 005"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
@@ -156,6 +156,8 @@ def miDefault(params):
     
     if "<Formula1>" in datosConf:
         plugintools.add_item(action="Motor",url="<Formula1",title='[COLOR white]Carreras Formula-1 (Diferidos -[COLOR red]Acestream[COLOR white]-)[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
+    
+    plugintools.add_item(action="FutballEver",url=web,title='[COLOR white]Football Ever [COLOR blue][B](Parser Web)[/B][/COLOR]', thumbnail="https://www.giltedgesoccer.com/wp-content/uploads/2021/08/gesm-most-attended-soccer-games-usa.jpg", fanart=fondo, folder=True, isPlayable=False)
     
     
     acotacion = "a visionar<"
@@ -570,6 +572,55 @@ def zapping(params):
             plugintools.add_item(action="lanza", url=mivideo, title=titu, genre="", thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
 
 
+
+
+def FutballEver(params):
+    logo1 = params.get("thumbnail")
+    
+    futData = httptools.downloadpage("http://www.footballever.net/", headers={'Referer': "http://www.footballever.net/"}).data
+    
+    ##Cabecera
+    plugintools.add_item(action="",url="",title="     [COLOR blue]····FootBall Ever. Parser de la web footballever.net····[/COLOR]",thumbnail=logo1,fanart=fondo,folder=False,isPlayable=False)
+    
+    #Los canales permanentes 24h
+    acotacion = "class='homepage"
+    grupo = plugintools.find_single_match(futData,acotacion+'(.*?)</ul')
+    canales = plugintools.find_multiple_matches(grupo,'<a(.*?)/a>')
+    for item in canales:
+        if (not "Home" in item) and (not "Multi Streams" in item):
+            futData2 = ""
+            urlweb = "http://www.footballever.net" + plugintools.find_single_match(item,"href='(.*?)'")
+            titulo = plugintools.find_single_match(item,"menuitem'>(.*?)<") + "[COLOR lime]    -Emisión 24h-[/COLOR]"
+            titu = "[COLOR white]" + titulo + "[/COLOR]"
+            
+            ##Capturo el link de la emisión
+            futData2 = httptools.downloadpage(urlweb, headers={'Referer': "http://www.footballever.net/"}).data
+            acota2 = 'source: "'
+            mivideo = plugintools.find_single_match(futData2, acota2 + '(.*?)"')
+            
+            plugintools.add_item(action="lanza", url=mivideo, title=titu, genre="", thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
+
+    #Los canales de Eventos
+    acotacion = "ul id='navbar-link-list"
+    grupo = plugintools.find_single_match(futData,acotacion+'(.*?)</ul')
+    canales = plugintools.find_multiple_matches(grupo,'<a(.*?)/a>')
+    for item in canales:
+        futData2 = ""
+        urlweb = "http://www.footballever.net" + plugintools.find_single_match(item,"href='(.*?)'")
+        titulo = plugintools.find_single_match(item,"html'>(.*?)<")
+        
+        if len(titulo) > 0:
+            titu = "[COLOR white]" + titulo + "[COLOR orange]    -Activo solo en Eventos-" + "[/COLOR]"
+            
+            ##Capturo el link de la emisión
+            futData2 = httptools.downloadpage(urlweb, headers={'Referer': "http://www.footballever.net/"}).data
+            acota2 = 'source: "'
+            mivideo = plugintools.find_single_match(futData2, acota2 + '(.*?)"')
+            
+            plugintools.add_item(action="lanza", url=mivideo, title=titu, genre="", thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
+
+    ##Pie
+    plugintools.add_item(action="",url="",title="[COLOR salmon]**Canales en formato [COLOR blue]m3u8,[COLOR salmon] no precisan [COLOR red]Acestream[/COLOR]",thumbnail=logo1,fanart=fondo,folder=False,isPlayable=False)
 
 
 
