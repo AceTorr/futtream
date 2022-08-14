@@ -28,8 +28,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 005"
-comparaVersion="0.2.1 Fix 005"
+version="(v0.2.1) Fix 006"
+comparaVersion="0.2.1 Fix 006"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
@@ -620,7 +620,8 @@ def FutballEver(params):
             plugintools.add_item(action="lanza", url=mivideo, title=titu, genre="", thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
 
     ##Pie
-    plugintools.add_item(action="",url="",title="[COLOR salmon]**Canales en formato [COLOR blue]m3u8,[COLOR salmon] no precisan [COLOR red]Acestream[/COLOR]",thumbnail=logo1,fanart=fondo,folder=False,isPlayable=False)
+    plugintools.add_item(action="",url="",title="[COLOR lime]**Si no aparece ningún canal, será necesario usar [COLOR blue]VPN [COLOR lime](depende del proveedor de Internet)[/COLOR]",thumbnail=logo1,fanart=fondo,folder=False,isPlayable=False)
+    plugintools.add_item(action="",url="",title="[COLOR salmon]***Canales en formato [COLOR blue]m3u8,[COLOR salmon] no precisan [COLOR red]Acestream[/COLOR]",thumbnail=logo1,fanart=fondo,folder=False,isPlayable=False)
 
 
 
@@ -630,7 +631,7 @@ def lanza(params):
     titu = params.get("title")
     titulo = params.get("extra")
     #mivideo = "plugin://plugin.video.youtube/play/?video_id=BIc2fgz25iA"
-    #mivideo = "http://46.21.250.55:8080/live/Julito/Julito/93379.m3u8|user-agent=vlc"
+    #mivideo = "http://xcefe.vladruman.com:8080/hls/007-1659989990674.ts"
     xbmc.Player().play(mivideo)
 
 
