@@ -28,8 +28,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 006"
-comparaVersion="0.2.1 Fix 006"
+version="(v0.2.1) Fix 007"
+comparaVersion="0.2.1 Fix 007"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
@@ -41,6 +41,7 @@ logoprin = xbmc.translatePath(os.path.join(mi_addon,'icon.png'))
 
 mislogos = xbmc.translatePath(os.path.join('special://home/addons/plugin.video.FutbolTream/jpg/'))
 logo_transparente = xbmc.translatePath(os.path.join(mislogos , 'transparente.png'))
+logoLiga = "https://i.imgur.com/JCnA8k6.png"
 
 audios = xbmc.translatePath(os.path.join('special://home/addons/plugin.video.FutbolTream/audios/'))
 lasliao = xbmc.translatePath(os.path.join(audios, 'error.mp3'))
@@ -150,6 +151,8 @@ def miDefault(params):
     
     if "<Varios>" in datosConf:
         plugintools.add_item(action="variosTemp",url=web,title='[COLOR white]Canales Temporales[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
+    
+    plugintools.add_item(action="laLiga",url="",title='[COLOR white]Resúmenes partidos de Liga[/COLOR]', thumbnail=logoLiga, fanart=fondo, folder=True, isPlayable=False)
     
     if "<MotoGP>" in datosConf:
         plugintools.add_item(action="Motor",url="<MotoGP",title='[COLOR white]Carreras MotoGP (Diferidos -[COLOR red]Acestream[COLOR white]-)[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
@@ -622,6 +625,26 @@ def FutballEver(params):
     ##Pie
     plugintools.add_item(action="",url="",title="[COLOR lime]**Si no aparece ningún canal, será necesario usar [COLOR blue]VPN [COLOR lime](depende del proveedor de Internet)[/COLOR]",thumbnail=logo1,fanart=fondo,folder=False,isPlayable=False)
     plugintools.add_item(action="",url="",title="[COLOR salmon]***Canales en formato [COLOR blue]m3u8,[COLOR salmon] no precisan [COLOR red]Acestream[/COLOR]",thumbnail=logo1,fanart=fondo,folder=False,isPlayable=False)
+
+
+
+
+def laLiga(params):
+    logo = logoLiga
+    youtube = "plugin://plugin.video.youtube/channel/UCTv-XvfzLX3i4IGWAm4sbmA/playlists/"
+    duff = "eydhY3Rpb24nOiAnaW9pSWlpMUlJJywgJ2ZhbmFydCc6ICcnLCAnaWNvbic6ICcnLCAnaWQnOiAnTUktSUQtQ0FOQUwnLCAnbGFiZWwnOiAnJywgJ3BhZ2UnOiAxLCAncGxvdCc6ICIiLCAncXVlcnknOiAiIiwgJ3RpcG8nOiAnY2hhbm5lbCd9"
+    reemplaza = base64.b64decode(duff.encode('utf-8')).decode('utf-8').replace("MI-ID-CANAL" , "UCTv-XvfzLX3i4IGWAm4sbmA")
+    duffyou = "plugin://plugin.video.duffyou/?" + base64.b64encode(reemplaza.encode('utf-8')).decode('utf-8')
+
+    titu = "[COLOR white]Ver usando addon [COLOR red][B]YouTube[/B][/COLOR]"
+    plugintools.add_item(action="lanza", url=youtube, title=titu, genre="", thumbnail=logo, fanart=fondo, folder=True, isPlayable=False)
+    titu = "[COLOR white]Ver usando addon [COLOR orange][B]DuffYou[/B][/COLOR]"
+    plugintools.add_item(action="lanza", url=duffyou, title=titu, genre="", thumbnail=logo, fanart=fondo, folder=True, isPlayable=False)
+
+    plugintools.add_item(action="",url="",title="",thumbnail=logo,fanart=fondo,folder=False,isPlayable=False)
+    plugintools.add_item(action="",url="",title="[COLOR lime]**Los Resúmenes de los partidos de cada jornada y mucho mas...[/COLOR]",thumbnail=logo,fanart=fondo,folder=False,isPlayable=False)
+
+
 
 
 
