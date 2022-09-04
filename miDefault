@@ -28,8 +28,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 007"
-comparaVersion="0.2.1 Fix 007"
+version="(v0.2.1) Fix 008"
+comparaVersion="0.2.1 Fix 008"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
@@ -54,6 +54,7 @@ datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yYXcuZ2l0aHVidXN
 if not "<FutbolTream2>" in datosConf:
     datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yZW50cnkuY28veHM2YmYvcmF3".encode('utf-8')).decode('utf-8')).data
 
+lista2M = plugintools.find_single_match(datosConf,'dobleM>(.*?)<Fin')
 
 ListaCentralAcotaInicio = plugintools.find_single_match(datosConf,'ListaCentralAcotaInicio>(.*?)<Fin')
 ListaCentralAcotaFin = plugintools.find_single_match(datosConf,'ListaCentralAcotaFin>(.*?)<Fin')
@@ -132,13 +133,17 @@ def miDefault(params):
     else:
         plugintools.add_item(action="",url="",title="[COLOR red]····Guia de Eventos temporalmente Inactiva en la Web····[/COLOR]",thumbnail=logoprin,fanart=fondo,folder=False,isPlayable=False)
     
+    plugintools.add_item(action="dobleM",url=web,title='[COLOR white]Recopilación Canales Acestream de [COLOR orangered][B]"dobleM"[/B][/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
+    
     if ("Lucas_m_" in dataWeb):
         plugintools.add_item(action="bylucas",url=web,title='[COLOR white]'+Lista1_Titulo+'[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
     if ("@MANUK0S" in dataWeb):
         plugintools.add_item(action="manukos",url=web,title='[COLOR white]'+Lista2_Titulo+'[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
     if ("Canales HD" in dataWeb):
         plugintools.add_item(action="canalesHD",url=web,title='[COLOR white]'+Lista3_Titulo+'[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
-    
+    if (Lista4_AcotaInicio in dataWeb):
+        plugintools.add_item(action="nbaTV",url=web,title='[COLOR white]'+Lista4_Titulo+'[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
+    '''
     if not ("Lucas_m_" in dataWeb) and not ("@MANUK0S" in dataWeb):  ##Intentamos coger todos los links en una única lista
         plugintools.add_item(action="listaCentral",url=web,title='[COLOR white]Recopilación Temporal de Listas [COLOR lime]>>entrar<< [COLOR coral](Faltan datos de creadores en la Web)[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
     else:
@@ -148,7 +153,7 @@ def miDefault(params):
         #if ("NBA Tv" in dataWeb) or ("@ManuK0S" in dataWeb) or ("@MANUK0S" in dataWeb):
         if (Lista4_AcotaInicio in dataWeb):
             plugintools.add_item(action="nbaTV",url=web,title='[COLOR white]'+Lista4_Titulo+'[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
-    
+    '''
     if "<Varios>" in datosConf:
         plugintools.add_item(action="variosTemp",url=web,title='[COLOR white]Canales Temporales[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
     
@@ -214,6 +219,54 @@ def guiaEventos(params):
             
             plugintools.add_item(action="laLiaste", url="", title=titu, genre="", thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
             
+
+
+def dobleM(params):
+
+    listaDoble = httptools.downloadpage(lista2M).data
+    
+    ##Obtengo datos de cuando se ha actualizado
+    acotacion = "EXTM3U Acestream Deportes"
+    acotaFin = "#"
+    fecActu = plugintools.find_single_match(listaDoble,acotacion+'(.*?)'+acotaFin).replace("\r\n" , "").replace("\n" , "")
+    
+    plugintools.add_item(action="",url="",title="[COLOR orangered]***Actualizado: [B]"+fecActu+"[/B]***[/COLOR]",thumbnail=logoprin,fanart=fondo,folder=False,isPlayable=False)
+    
+    acotacion = "EXTINF:-1"
+    acotaFin = ".mp4"
+    canales = plugintools.find_multiple_matches(listaDoble,acotacion+'(.*?)'+acotaFin)  
+    for item in canales:
+        titulo = plugintools.find_single_match(item,'tvg-id="(.*?)"')
+        acotacion = "/pid/"
+        acotaFin = "/stream"
+        link = "acestream://" + plugintools.find_single_match(item,acotacion+'(.*?)'+acotaFin)
+        titu = "[COLOR white]" + titulo + "[/COLOR]"
+        NoM3U = True
+        if len(titulo) > 0:
+            if "acestream" in link:
+                link = link.replace("acestream://" , "")
+                horus = horusAce
+                reemplaza = base64.b64decode(horus.encode('utf-8')).decode('utf-8').replace("MI-ID-ACE" , link)
+            else:
+                mivideo = link
+                NoM3U = False
+                
+            if usaHorus and NoM3U:
+                reemplaza = reemplaza.replace("MI-FANART" , "")
+                reemplaza = reemplaza.replace("MI-ICONO" , logoprin)
+                reemplaza = reemplaza.replace("MI-TITULO" , titulo)
+                
+                mivideo = "plugin://script.module.horus/?" + base64.b64encode(reemplaza.encode('utf-8')).decode('utf-8')
+            else:
+                if NoM3U:
+                    if "://" in link:  ##Es una url o de un link acortado o de una url torrent
+                        mivideo = "http://127.0.0.1:6878/ace/getstream?url=" + link
+                    else:  ## Es un ID clásico de Acestream
+                        mivideo = "http://127.0.0.1:6878/ace/getstream?id=" + link
+            
+            plugintools.add_item(action="lanza", url=mivideo, title=titu, genre="", thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
+
+
 
 
 def Motor(params):
