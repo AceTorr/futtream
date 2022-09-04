@@ -127,11 +127,14 @@ def miDefault(params):
     
     plugintools.add_item(action="",url="",title=cabecera,thumbnail=logoprin,fanart=fondo,folder=False,isPlayable=False)
 
-    #if len(guia_eventos) > 0:
+    '''
     if len(guia_eventos) > 0 and pongo_Agenda == "SI":
         plugintools.add_item(action="guiaEventos",url=web,title='[COLOR lime]>>>  Guía de Eventos  (entrar)  <<<[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
     else:
         plugintools.add_item(action="",url="",title="[COLOR red]····Guia de Eventos temporalmente Inactiva en la Web····[/COLOR]",thumbnail=logoprin,fanart=fondo,folder=False,isPlayable=False)
+    '''
+    plugintools.add_item(action="",url="",title="[COLOR red]····Guia de Eventos temporalmente Inactiva en la Web····[/COLOR]",thumbnail=logoprin,fanart=fondo,folder=False,isPlayable=False)
+    
     
     plugintools.add_item(action="dobleM",url=web,title='[COLOR white]Recopilación Canales Acestream de [COLOR orangered][B]"dobleM"[/B][/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
     
