@@ -28,8 +28,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 008"
-comparaVersion="0.2.1 Fix 008"
+version="(v0.2.1) Fix 009"
+comparaVersion="0.2.1 Fix 009"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
@@ -711,6 +711,12 @@ def lanza(params):
     titulo = params.get("extra")
     #mivideo = "plugin://plugin.video.youtube/play/?video_id=BIc2fgz25iA"
     #mivideo = "http://xcefe.vladruman.com:8080/hls/007-1659989990674.ts"
+    
+    if "tokyvideo.com" in mivideo:
+        mivideo2 = httptools.downloadpage(mivideo).data
+        acotacion = 'source src="'
+        mivideo = plugintools.find_single_match(mivideo2,acotacion+'(.*?)"')
+    
     xbmc.Player().play(mivideo)
 
 
