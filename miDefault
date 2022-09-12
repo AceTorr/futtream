@@ -82,20 +82,27 @@ Lista4_AcotaFin = plugintools.find_single_match(datosConf,'Lista4_AcotaFin>(.*?)
 web = plugintools.find_single_match(datosConf,'FutbolTream2>(.*?)<Fin')
 headers = {'Referer': web}
 
-dataWeb = httptools.downloadpage(web).data + "<END>"
+##Para evitar error en ejecución cuando el ISP ha bloqueado la web usamos el Try-Except
+try:
+    dataWeb = httptools.downloadpage(web).data + "<END>"
+    
+    quita = '<font class="wsw-13">'
+    dataWeb = dataWeb.replace(quita , "").replace("&nbsp;" , " ")
 
-quita = '<font class="wsw-13">'
-dataWeb = dataWeb.replace(quita , "").replace("&nbsp;" , " ")
+    ##Vamos a quitar los que tienen "Comentados" en la web
+    acotaIni = "<!--"
+    acotaFinal = "-->"
+    aQuitar = plugintools.find_multiple_matches(dataWeb,acotaIni+'(.*?)'+acotaFinal)
+    for quitalo in aQuitar:
+        borra = acotaIni + quitalo + acotaFinal
+        dataWeb = dataWeb.replace(borra , "")
 
-##Vamos a quitar los que tienen "Comentados" en la web
-acotaIni = "<!--"
-acotaFinal = "-->"
-aQuitar = plugintools.find_multiple_matches(dataWeb,acotaIni+'(.*?)'+acotaFinal)
-for quitalo in aQuitar:
-    borra = acotaIni + quitalo + acotaFinal
-    dataWeb = dataWeb.replace(borra , "")
+    guia_eventos = plugintools.find_multiple_matches(dataWeb,'<tr>(.*?)</tr>')
 
-guia_eventos = plugintools.find_multiple_matches(dataWeb,'<tr>(.*?)</tr>')
+except:
+    dataWeb = ""
+    guia_eventos = ""
+
 
 
 if not os.path.exists(mi_data):
@@ -145,6 +152,8 @@ def miDefault(params):
     
     if ("Lucas_m_" in dataWeb):
         plugintools.add_item(action="bylucas",url=web,title='[COLOR white]'+Lista1_Titulo+'[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
+    else:
+        plugintools.add_item(action="errorLectura",url=web,title='[COLOR slategray]**'+Lista1_Titulo+'**[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
     if ("@MANUK0S" in dataWeb):
         plugintools.add_item(action="manukos",url=web,title='[COLOR white]'+Lista2_Titulo+'[/COLOR]', thumbnail=logoprin, fanart=fondo, folder=True, isPlayable=False)
     if ("Canales HD" in dataWeb):
@@ -811,8 +820,9 @@ def lanza(params):
     logo = params.get("thumbnail")
     titu = params.get("title")
     titulo = params.get("extra")
-    #mivideo = "plugin://plugin.video.youtube/play/?video_id=BIc2fgz25iA"
-    #mivideo = "http://xcefe.vladruman.com:8080/hls/007-1659989990674.ts"
+    #mivideo = "http://127.0.0.1:6878/ace/getstream?id=magnet:?xt=urn:btih:92ef130864abc0bd63546e38ca4cf7269eb0bd72"
+    #mivideo = "plugin://plugin.video.f4mTester/?streamtype=TSDOWNLOADER&amp;url=http://270777632905317581.nicesbot.xyz:80/5CD6UASN8T/4533181220/317581"
+    #mivideo = "plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;url=http://s846397078.mialojamiento.es/w2jy/toro.php/mono.m3u8"
     
     if "tokyvideo.com" in mivideo:
         mivideo2 = httptools.downloadpage(mivideo).data
@@ -833,6 +843,18 @@ def laLiaste(params):
     l3 = "vuelva al Menú Principal y busque el canal en sus Carpetas."
     mensaje = l1+l2+l3
     xbmcgui.Dialog().ok( "[COLOR lime]¡¡¡INCORRECTO!!![/COLOR]" , mensaje )
+
+
+
+
+def errorLectura(params):
+	
+    xbmc.Player().play(lasliao)
+    l1 = "La página a la se intenta acceder no está disponible."+"\n"+"\n"
+    l2 = "El motivo puede ser por un mantenimiento de dicha web"+"\n"
+    l3 = "o por estar bloqueada desde tu Proveedor de Internet."
+    mensaje = l1+l2+l3
+    xbmcgui.Dialog().ok( "[COLOR lime]¡¡¡ERROR de Lectura de Página Web!!![/COLOR]" , mensaje )
 
 
 
