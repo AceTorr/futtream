@@ -851,7 +851,7 @@ def errorLectura(params):
 	
     xbmc.Player().play(lasliao)
     l1 = "La página a la se intenta acceder no está disponible."+"\n"
-    l2 = "El motivo puede ser por un mantenimiento de dicha webo por estar"+"\n"
+    l2 = "El motivo puede ser por un mantenimiento de dicha web o por estar"+"\n"
     l3 = "bloqueada desde tu Proveedor de Internet... [COLOR red]Prueba otras opciones del Menú.[/COLOR]"
     mensaje = l1+l2+l3
     xbmcgui.Dialog().ok( "[COLOR lime]¡¡¡ERROR de Lectura de Página Web!!![/COLOR]" , mensaje )
