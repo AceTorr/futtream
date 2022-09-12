@@ -28,8 +28,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 010"
-comparaVersion="0.2.1 Fix 010"
+version="(v0.2.1) Fix 011"
+comparaVersion="0.2.1 Fix 011"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
