@@ -38,6 +38,10 @@ xxxxxx
 <Lista3_AcotaInicio>Canales HD<Fin>
 <Lista3_AcotaFin><div<Fin>
 
+<Varios>Bein Sports Xtra espaÑol hd [COLOR blue](m3u8)[/COLOR]<link>https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/bein-sports-xtra-en-espanol/e1ce6bb5-9af3-489b-8a85-e55c6a334d91/2.m3u8<Fin>
+<Varios>Wrestling Channel hd -Ing- [COLOR blue](m3u8)[/COLOR]<link>https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/impact-wrestling-channel/cd9e5ea0-7b79-486d-82a6-ed0f36944715/0.m3u8<Fin>
+<Varios>Boxing TV hd -Ing- [COLOR blue](m3u8)[/COLOR]<link>https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/boxing-tv/47ebccb1-e219-445e-856b-0dc445cd191c/4.m3u8<Fin>
+
 <Varios>UFC hd -Ruso- [COLOR red](Acestream)[/COLOR]<link>acestream://d2374e2375a4275738e0dbed2f47d0114ad1cb64<Fin>
 <Varios>FightBox HD -Ruso- [COLOR red](Acestream)[/COLOR]<link>acestream://49b734a5a3365674480089264be00ae28fabb640<Fin>
 <Varios>Fightklub HD -Polaco- [COLOR red](Acestream)[/COLOR]<link>acestream://b73da828421018c98905ed05934b77ea35aa1b29<Fin>
