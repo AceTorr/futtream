@@ -28,8 +28,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 011"
-comparaVersion="0.2.1 Fix 011"
+version="(v0.2.1) Fix 012"
+comparaVersion="0.2.1 Fix 012"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
@@ -102,7 +102,6 @@ try:
 except:
     dataWeb = ""
     guia_eventos = ""
-
 
 
 if not os.path.exists(mi_data):
@@ -820,7 +819,7 @@ def lanza(params):
     logo = params.get("thumbnail")
     titu = params.get("title")
     titulo = params.get("extra")
-    #mivideo = "http://127.0.0.1:6878/ace/getstream?id=magnet:?xt=urn:btih:92ef130864abc0bd63546e38ca4cf7269eb0bd72"
+    #mivideo = ""
     #mivideo = "plugin://plugin.video.f4mTester/?streamtype=TSDOWNLOADER&amp;url=http://270777632905317581.nicesbot.xyz:80/5CD6UASN8T/4533181220/317581"
     #mivideo = "plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;url=http://s846397078.mialojamiento.es/w2jy/toro.php/mono.m3u8"
     
@@ -829,7 +828,11 @@ def lanza(params):
         acotacion = 'source src="'
         mivideo = plugintools.find_single_match(mivideo2,acotacion+'(.*?)"')
     
-    xbmc.Player().play(mivideo)
+    #xbmc.Player().play(mivideo)
+    li = xbmcgui.ListItem(titu)
+    li.setInfo(type='Video', infoLabels="")
+    li.setArt({ 'thumb': logo})
+    xbmc.Player().play(mivideo, li)
 
 
 
