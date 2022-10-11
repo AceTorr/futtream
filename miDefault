@@ -28,8 +28,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 012"
-comparaVersion="0.2.1 Fix 012"
+version="(v0.2.1) Fix 014"
+comparaVersion="0.2.1 Fix 014"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
@@ -819,7 +819,7 @@ def lanza(params):
     logo = params.get("thumbnail")
     titu = params.get("title")
     titulo = params.get("extra")
-    #mivideo = ""
+    #mivideo = "https://streamtape.com/v/9BLGV8YadVUawjb/F.1.GP.Jpn.09.10.2022.mp4"
     #mivideo = "plugin://plugin.video.f4mTester/?streamtype=TSDOWNLOADER&amp;url=http://270777632905317581.nicesbot.xyz:80/5CD6UASN8T/4533181220/317581"
     #mivideo = "plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;url=http://s846397078.mialojamiento.es/w2jy/toro.php/mono.m3u8"
     
@@ -828,6 +828,10 @@ def lanza(params):
         acotacion = 'source src="'
         mivideo = plugintools.find_single_match(mivideo2,acotacion+'(.*?)"')
     
+    if "streamtape" in mivideo:
+        mivideo = StreaTape(mivideo)
+        
+        
     #xbmc.Player().play(mivideo)
     li = xbmcgui.ListItem(titu)
     li.setInfo(type='Video', infoLabels="")
@@ -835,6 +839,47 @@ def lanza(params):
     xbmc.Player().play(mivideo, li)
 
 
+
+def StreaTape(mi_url):
+
+    import time
+    mivideo2 = httptools.downloadpage(mi_url).data
+    mivideo2 = mivideo2.replace("getElementById('ideoooolink" , "DESDE_AQUI")
+    #acotacion = "getElementById('ideoooolink"
+    acotacion = "DESDE_AQUI"
+    provisional = plugintools.find_single_match(mivideo2,acotacion+"(.*?)substring")
+    provisional = provisional.replace("ideo?id=" , "ID_VIDEO")
+    #plugintools.log("*****************Provi: "+provisional+"********************")
+    #acotacion = "ideo?id="  ##Casi todas las veces lo genera de esta forma
+    acotacion = "ID_VIDEO"  ##Casi todas las veces lo genera de esta forma: ideo?id=
+    el_ID = ""
+    el_ID = plugintools.find_single_match(provisional,acotacion+"(.*?)'")
+
+    if not "&token" in el_ID:  ##No nos sirve, hay q volver a llamarlo
+        el_ID = ""
+    contador = 0
+    while len(el_ID) == 0 and contador < 5:  ## Lo intento hasta 5 veces pues de cada 5, 3 vienen con la estructura correcta
+        time.sleep(1)
+        mivideo2 = httptools.downloadpage(mi_url).data
+        mivideo2 = mivideo2.replace("getElementById('ideoooolink" , "DESDE_AQUI")
+        acotacion = "DESDE_AQUI"
+        provisional = plugintools.find_single_match(mivideo2,acotacion+"(.*?)substring")
+        provisional = provisional.replace("ideo?id=" , "ID_VIDEO")
+        acotacion = "ID_VIDEO"  ##Casi todas las veces lo genera de esta forma: ideo?id=
+        el_ID = ""
+        el_ID = plugintools.find_single_match(provisional,acotacion+"(.*?)'")
+
+        if not "&token" in el_ID:  ##No nos sirve, hay q volver a llamarlo
+            el_ID = ""
+        
+        contador = contador + 1
+        
+    plantilla = "https://streamtape.com/get_video?id=MI-ID-VIDEO|User-Agent=Mozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F68.0.3440.106+Safari%2F537.36+OPR%2F55.0.2994.37"    
+    
+    mi_url = plantilla.replace("MI-ID-VIDEO" , el_ID)
+    
+    return mi_url
+    
 
 
 
