@@ -53,10 +53,10 @@ if setting('lanzarCon') == "0":  ##0 = Elementum  1 = Horus+Acestream
 
 datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0FjZVRvcnIvZnV0dHJlYW0vbWFpbi9EYXRvc0NvbmY=".encode('utf-8')).decode('utf-8')).data
 
-if not "<TTV>" in datosConf:
+if not "<TTV2>" in datosConf:
     datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yZW50cnkuY28veHM2YmYvcmF3".encode('utf-8')).decode('utf-8')).data
 
-datosTel = plugintools.find_single_match(datosConf,'TTVtel>(.*?)<Fin')
+datosTel = plugintools.find_single_match(datosConf,'TTVtel2>(.*?)<Fin')
 telegram = httptools.downloadpage(datosTel).data
 
 #plugintools.log("*****************TELEGRAM: "+telegram+"********************")
