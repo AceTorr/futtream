@@ -24,7 +24,7 @@ addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
 version="(v2.0.0) Fix 001"
-comparaVersion="1.0.2 Fix 001"
+comparaVersion="2.0.0 Fix 001"
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 mi_data = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/plugin.video.TorrentsTV/'))
