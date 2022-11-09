@@ -30,8 +30,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v0.2.1) Fix 015"
-comparaVersion="0.2.1 Fix 015"
+version="(v0.2.1) Fix 016"
+comparaVersion="0.2.1 Fix 016"
 
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
@@ -110,6 +110,7 @@ lCanales = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yZW50cnkuY28vM3k0
 lCanales = lCanales.replace("[" , "&").replace("]" , "&")
 acotaIni = '&Linea&'
 acotaFinal = '&/L'
+lCanales = lCanales.replace("&DE&" ,"[DE]").replace("&PL&" ,"[PL]")
 listaCanales = plugintools.find_multiple_matches(lCanales,acotaIni+'(.*?)'+acotaFinal)
 
 if not os.path.exists(mi_data):
@@ -358,6 +359,14 @@ def dobleM(params):
 
 
 def mmInternacional(params):
+    lBusca = params.get("extra")
+    aEncontrar = params.get("info_labels")
+    
+    hayBusca = False
+    if lBusca == "BUSCAR":
+        hayBusca = True
+        encontrados = []
+
 
     listaDoble = httptools.downloadpage(m2Internacional).data
     listaDoble = listaDoble + "#"
@@ -405,7 +414,17 @@ def mmInternacional(params):
                     else:  ## Es un ID clásico de Acestream
                         mivideo = "http://127.0.0.1:6878/ace/getstream?id=" + link
             
-            plugintools.add_item(action="lanza", url=mivideo, title=titu, genre="", thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
+            if hayBusca:
+                for item2 in aEncontrar:
+                    if item2.upper() == titulo.upper():
+                        lLinea = "&Titu&" + titulo + "&Link&" + mivideo + "&Fin"
+                        encontrados.append(lLinea)
+            
+            else:
+                plugintools.add_item(action="lanza", url=mivideo, title=titu, genre="", thumbnail=logoprin, fanart=fondo, folder=False, isPlayable=False)
+    
+    if hayBusca:
+        return encontrados
 
 
 
@@ -969,11 +988,14 @@ def adivinaCanal(params):
             vuelta = vuelta + vuelta2
             vuelta3 = dobleM(params)
             vuelta = vuelta + vuelta3
+            vuelta4 = mmInternacional(params)
+            vuelta = vuelta + vuelta4
             
             for item2 in vuelta:
                 aco1 = "Titu&"
                 aco2 = "&Link"
                 titu2 = plugintools.find_single_match(item2,aco1+"(.*?)"+aco2)
+                titu2 = titu2.replace("[DE]" , "[Alemán]").replace("[PL]" , "[Polaco]")
                 aco1 = "Link&"
                 aco2 = "&Fin"
                 mivideo = plugintools.find_single_match(item2,aco1+"(.*?)"+aco2)
