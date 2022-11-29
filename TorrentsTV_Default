@@ -23,8 +23,8 @@ addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
 addonId             = xbmcaddon.Addon().getAddonInfo("id")
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 
-version="(v2.0.0) Fix 001"
-comparaVersion="2.0.0 Fix 001"
+version="(v2.0.0) Fix 002"
+comparaVersion="2.0.0 Fix 002"
 
 addonPath           = xbmcaddon.Addon().getAddonInfo("path")
 mi_data = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/plugin.video.TorrentsTV/'))
@@ -56,27 +56,39 @@ datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yYXcuZ2l0aHVidXN
 if not "<TTV2>" in datosConf:
     datosConf = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9yZW50cnkuY28veHM2YmYvcmF3".encode('utf-8')).decode('utf-8')).data
 
-datosTel = plugintools.find_single_match(datosConf,'TTVtel2>(.*?)<Fin')
-telegram = httptools.downloadpage(datosTel).data
-
-#plugintools.log("*****************TELEGRAM: "+telegram+"********************")
-#telegram = telegram.replace("(Disponible)" , "HASTA_AQUI").replace('auto">Dominio' , 'DESDE_AQUI')
-telegram = telegram.replace('auto">Dominio' , 'DESDE_AQUI').replace("</div" , "HASTA_AQUI")
-acotac1 = 'DESDE_AQUI'
-acotac2 = 'HASTA_AQUI'
-#provisional = plugintools.find_single_match(telegram,acotacion+'(.*?)<i')
-## He visto q algunas veces no "deshabilitan" post anteriores en el telegram, los cojo todos y me quedo con el último
-prov1 = plugintools.find_multiple_matches(telegram,acotac1+'(.*?)'+acotac2)
-
 web = ""
-if len(prov1) > 0:
-    web = plugintools.find_single_match(prov1[-1],'href="(.*?)"')
+##Usamos su nueva web de generación de Proxys
+pagProxy = httptools.downloadpage(base64.b64decode("aHR0cHM6Ly9kb25wcm94aWVzLmNvbQ==".encode('utf-8')).decode('utf-8')).data
+ini1 = ""
+fin1 = ""
+web = plugintools.find_single_match(pagProxy,ini1+'<a href="(.*?)"')
+#plugintools.log("*****************WEB: "+web+"********************")
+#para()
+if len(web) > 0:
+    web = web + "/"
     headers = {'Referer': web}
+else:
+    datosTel = plugintools.find_single_match(datosConf,'TTVtel2>(.*?)<Fin')
+    telegram = httptools.downloadpage(datosTel).data
+
+    #plugintools.log("*****************TELEGRAM: "+telegram+"********************")
+    #telegram = telegram.replace("(Disponible)" , "HASTA_AQUI").replace('auto">Dominio' , 'DESDE_AQUI')
+    telegram = telegram.replace('auto">Dominio' , 'DESDE_AQUI').replace("</div" , "HASTA_AQUI")
+    acotac1 = 'DESDE_AQUI'
+    acotac2 = 'HASTA_AQUI'
+    #provisional = plugintools.find_single_match(telegram,acotacion+'(.*?)<i')
+    ## He visto q algunas veces no "deshabilitan" post anteriores en el telegram, los cojo todos y me quedo con el último
+    prov1 = plugintools.find_multiple_matches(telegram,acotac1+'(.*?)'+acotac2)
+
+    web = ""
+    if len(prov1) > 0:
+        web = plugintools.find_single_match(prov1[-1],'href="(.*?)"')
+        headers = {'Referer': web}
 
 
-if len(web) == 0:  ##Hay algún problema en el canal Telegram
-    web = plugintools.find_single_match(datosConf,'TTV>(.*?)<Fin')
-    headers = {'Referer': web}
+    if len(web) == 0:  ##Hay algún problema en el canal Telegram
+        web = plugintools.find_single_match(datosConf,'TTV2>(.*?)<Fin')
+        headers = {'Referer': web}
 
 #plugintools.log("*****************WEB: "+web+"********************")
 #para()
