@@ -18,6 +18,11 @@ from core.item import Item
 from platformcode.config import WebErrorException
 from platformcode import platformtools
 
+addonName           = xbmcaddon.Addon().getAddonInfo("name")
+addonVersion        = xbmcaddon.Addon().getAddonInfo("version")
+addonId             = xbmcaddon.Addon().getAddonInfo("id")
+addonPath           = xbmcaddon.Addon().getAddonInfo("path")
+
 
 
 	
